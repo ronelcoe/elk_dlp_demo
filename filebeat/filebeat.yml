@@ -1,0 +1,90 @@
+######################## Filebeat Configuration ############################
+
+# This file is a full configuration example documenting all non-deprecated
+# options in comments. For a shorter configuration example, that contains only
+# the most common options, please see filebeat.yml in the same directory.
+#
+# You can find the full configuration reference here:
+# https://www.elastic.co/guide/en/beats/filebeat/index.html
+
+#==========================  Modules configuration ============================
+filebeat.modules:
+
+#=========================== Filebeat inputs =============================
+
+
+# List of inputs to fetch data.
+filebeat.inputs:
+#------------------------------ Log input --------------------------------
+- type: log
+  enabled: true
+
+  # Change to true to enable this input configuration.
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  # To fetch all ".log" files from a specific level of subdirectories
+  # /var/log/*/*.log can be used.
+  # For each file found under this path, a harvester is started.
+  # Make sure not file is defined twice as this can lead to unexpected behaviour.
+  paths:
+    - /data/elk/applogs/app1.log
+  multiline.pattern: '^20'
+  multiline.negate: true
+  multiline.match: after
+  fields:
+    app_id: app1
+    app_module: quarkus1
+    log_type: logback-standard
+    env: docker
+  fields_under_root: true
+  exclude_files: ['\.gz$']
+
+  # Paths that should be crawled and fetched. Glob based paths.
+  # To fetch all ".log" files from a specific level of subdirectories
+  # /var/log/*/*.log can be used.
+  # For each file found under this path, a harvester is started.
+  # Make sure not file is defined twice as this can lead to unexpected behaviour.
+- type: log
+  enabled: true
+  paths:
+    - /data/elk/applogs/app2.log
+  multiline.pattern: '^20'
+  multiline.negate: true
+  multiline.match: after
+  fields:
+    app_id: app2
+    app_module: quarkus2
+    log_type: logback-standard
+    env: docker
+  fields_under_root: true
+  exclude_files: ['\.gz$']
+
+- type: log
+  enabled: true
+  paths:
+    - /data/elk/applogs/app3.log
+  multiline.pattern: '^20'
+  multiline.negate: true
+  multiline.match: after
+  fields:
+    app_id: app3
+    app_module: quarkus3
+    log_type: logback-standard
+    env: docker
+  fields_under_root: true
+  exclude_files: ['\.gz$']
+
+#================================ Outputs ======================================
+
+#----------------------------- Logstash output ---------------------------------
+output.logstash:
+  # Boolean flag to enable or disable the output module.
+  enabled: true
+
+  # The Logstash hosts
+  hosts: ["logstash:5044"]
+
+xpack.monitoring:
+  enabled: true
+  elasticsearch:
+    hosts: ["http://elasticsearch:9200"]

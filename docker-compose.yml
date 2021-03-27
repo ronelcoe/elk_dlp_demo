@@ -1,0 +1,78 @@
+version: '3.3'
+
+services:
+  elasticsearch:
+    image: ronelcoe/elasticsearch_dlp:1.0
+    container_name: elastic_dlp
+    build:
+      context: elasticsearch
+      dockerfile: Dockerfile
+    deploy:
+      restart_policy:
+        condition: on-failure
+    environment:
+      - cluster.name=elk-dlp
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+      - 9300:9300
+
+  kibana:
+    image: ronelcoe/kibana_dlp:1.0
+    container_name: kibana_dlp
+    environment:
+      - "LOGGING_QUIET=true"
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5601:5601 
+
+  logstash:
+    image: ronelcoe/logstash_dlp:1.2
+    container_name: logstash_dlp
+    build:
+      context: logstash
+      dockerfile: Dockerfile
+    entrypoint:
+      - /bin/bash
+      - /usr/share/logstash/bin/logstash
+      - -f 
+      - /data/elk/pipeline/
+      - --java-execution
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5044:5044
+
+  filebeat:
+    image: ronelcoe/filebeat_dlp:1.2
+    container_name: filebeat_dlp
+    build:
+      context: filebeat
+      dockerfile: Dockerfile
+    volumes:
+      - ref_drive:/data/elk
+
+  # metricbeat:
+  #   image: ronelcoe/metricbeat_dlp:1.0
+  #   container_name: metricbeat_dlp
+  #   build:
+  #     context: metricbeat
+  #     dockerfile: Dockerfile
+
+  quarkus:
+    image: ronelcoe/quarkus_logger_dlp:1.0
+    container_name: quarkus_multi_logger
+    ports:
+      - 8080:8080
+    volumes:
+      - ref_drive:/data/elk
+
+volumes:
+  ref_drive:
+    driver: local

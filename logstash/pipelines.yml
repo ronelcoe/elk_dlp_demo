@@ -1,0 +1,6 @@
+- pipeline.id: main
+  queue.type: memory
+  path.config: /data/elk/pipeline/*.conf
+  pipeline.batch.delay: 5
+  pipeline.workers: 1
+  pipeline.output.workers: 1

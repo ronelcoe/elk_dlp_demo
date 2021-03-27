@@ -1,0 +1,93 @@
+{
+	"info": {
+		"_postman_id": "7b314d69-45ed-4e6b-bef8-60a2d7afff66",
+		"name": "quarkus-Multi-Logger",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Load Referential Data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/dlp/load/_data_elk_sensitiveData",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dlp",
+						"load",
+						"_data_elk_sensitiveData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate cx-authentication Log",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/dlp/generateLog/_data_elk_applogs_app1.log10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dlp",
+						"generateLog",
+						"_data_elk_applogs_app1.log10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate ebanking Log",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/dlp/generateLog/_data_elk_applogs_app2.log10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dlp",
+						"generateLog",
+						"_data_elk_applogs_app2.log10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate tat Log",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/dlp/generateLog/_data_elk_applogs_app3.log10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dlp",
+						"generateLog",
+						"_data_elk_applogs_app3.log10"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
